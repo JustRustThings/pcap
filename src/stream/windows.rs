@@ -98,12 +98,12 @@ impl EventHandle {
         loop {
             match self.state {
                 EventHandleState::Init => {
-                    let handle = self.handle;
+                    let handle = self.handle as usize;
                     self.state =
                         EventHandleState::Polling(tokio::task::spawn_blocking(move || {
                             const INFINITE: u32 = !0;
                             unsafe {
-                                WaitForSingleObject(handle, INFINITE);
+                                WaitForSingleObject(handle as _, INFINITE);
                             }
                         }));
                 }
